@@ -1,9 +1,11 @@
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Game extends Canvas implements Runnable, KeyListener {
 
@@ -19,8 +21,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private static int scale = 4;
 
     public static BufferedImage image;
-    public int x, y;
+    public static BufferedImage nave;
+    public String direction;
+
+    // Movimento
+    public int x = 100, y = 100, speed = 3;
     public boolean right, left, up, down;
+
+
 
 
     public Game(){
@@ -70,14 +78,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public void tick(){
         if(right){
-            x++;
+            x += speed;
         }else if (left){
-            x--;
+            x -= speed;
         }
         else if(up){
-            y--;
+            y -= speed;
         }else if (down){
-            y++;
+            y += speed;
         }
     }
 
@@ -134,18 +142,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        if(e.getKeyCode() == KeyEvent.VK_D){
+        if (e.getKeyCode() == KeyEvent.VK_D) {
             right = true;
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_A){
+        } else if (e.getKeyCode() == KeyEvent.VK_A) {
             left = true;
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_W){
-            up = true;
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_S){
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+               up = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
             down = true;
         }
+        
 
     }
 
