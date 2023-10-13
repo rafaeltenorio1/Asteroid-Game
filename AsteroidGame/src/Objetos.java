@@ -3,13 +3,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 public class Objetos {
 
-    private double x;
-    private double y;
-    private double width;
-    private double height;
-    private BufferedImage sprite;
 
-    public Objetos(double x,double y, double width,double height, BufferedImage sprite){
+    protected  double x;
+    protected double y;
+    protected int width;
+    protected int height;
+    protected BufferedImage sprite;
+
+    public Objetos(double x,double y, int width,int height, BufferedImage sprite){
 
         this.x = x;
         this.y = y;
@@ -36,12 +37,12 @@ public class Objetos {
         return (int)this.y;
     }
 
-    public void setWidth (double newWidth){
+    public void setWidth (int newWidth){
         this.width = newWidth;
 
     }
 
-    public void setHeight (double newHeight){
+    public void setHeight (int newHeight){
         this.height = newHeight;
 
     }
@@ -60,13 +61,9 @@ public class Objetos {
         return o1Mask.intersects(o2Mask);
 
     }
-
+    public void tick(){}
     public void render(Graphics g){
-        g.drawImage(sprite, getX(), getY(),null);
+        g.drawImage(sprite, this.getX(), this.getY(),null);
     }
-
-
-
-
 
 }
