@@ -1,41 +1,38 @@
-import javax.swing.*;
+import javax.swing.JFrame;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable, KeyListener {
 
     public static JFrame frame;
-
-    // Movimento do sprite
-    public int x, y;
-
-    public static BufferedImage image;
-    public static BufferedImage player;
-    public Sprites sprite;
 
     // Definem o fps
     public boolean isRunning = true;
     public Thread thread;
 
-
     // Tamanho da Janela
-    private static int height = 250;
-    private static int width = 400;
-    private static int scale = 3;
+    private static int height = 135;
+    private static int width = 240;
+    private static int scale = 4;
+
+    public static BufferedImage image;
+    public int x, y;
+    public boolean right, left, up, down;
+
 
     public Game(){
-
+        addKeyListener(this);
         this.setPreferredSize(new Dimension(width*scale, height*scale));
         image = new BufferedImage(width*scale, height*scale, BufferedImage.TYPE_INT_RGB);
-        startwindow();
-        //sprite = new Sprites("/sprites.png");
-        //player = sprite.getSprites(0,0,0,0);
+        Frame();
 
     }
 
 
-    public void startwindow() {
+    public void Frame() {
         frame = new JFrame("AsteroidGame");
         frame.add(this);
         frame.setResizable(false);
@@ -72,10 +69,17 @@ public class Game extends Canvas implements Runnable{
     }
 
     public void tick(){
-        x++;
-        y++;
-
-    };
+        if(right){
+            x++;
+        }else if (left){
+            x--;
+        }
+        else if(up){
+            y--;
+        }else if (down){
+            y++;
+        }
+    }
 
     public void  render(){
 
@@ -88,11 +92,10 @@ public class Game extends Canvas implements Runnable{
         Graphics g = bs.getDrawGraphics();
         g.setColor(new Color(0,0,0, 255));
         g.fillRect(0, 0, Game.width*Game.scale,Game.height*Game.scale);
-        g.setColor(Color.BLACK);
-        //g.setFont(new Font("Arial",Font.BOLD, 26));
-        //g.drawString("Ola", 50, 50);
+        g.setColor(Color.blue);
+        g.fillRect(x, y, 64, 64);
 
-        //g.drawImage(player,150,0,null);
+
         bs.show();
     }
 
@@ -121,5 +124,44 @@ public class Game extends Canvas implements Runnable{
             }
         }
         stop();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+        if(e.getKeyCode() == KeyEvent.VK_D){
+            right = true;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_A){
+            left = true;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_W){
+            up = true;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_S){
+            down = true;
+        }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_D){
+            right = false;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_A){
+            left = false;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_W){
+            up = false;
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_S){
+            down = false;
+        }
     }
 }
