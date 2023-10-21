@@ -8,15 +8,14 @@ public class Objetos {
     protected double y;
     protected int width;
     protected int height;
-    protected BufferedImage sprite;
 
-    public Objetos(double x,double y, int width,int height, BufferedImage sprite){
+
+    public Objetos(double x,double y, int width,int height){
 
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.sprite = sprite;
 
     }
 
@@ -61,9 +60,6 @@ public class Objetos {
         return o1Mask.intersects(o2Mask);
 
     }
-    public void tick(){}
-    public void render(Graphics g){
-        g.drawImage(sprite, this.getX(), this.getY(),null);
+    public void tick(){
     }
-
 }
