@@ -10,14 +10,11 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Brackground extends GraphicObject {
-
-    public BufferedImage sprite;
     public Brackground(int x, int y, int width, int height) {
         super(x, y, width, height);
-        pathname = "/res/Player/starBackground.png";
 
         try{
-            sprite = ImageIO.read(getClass().getResource(pathname));
+            sprite = ImageIO.read(getClass().getResource("/res/Player/starBackground.png"));
         }catch (IOException e){
             e.printStackTrace();
         }

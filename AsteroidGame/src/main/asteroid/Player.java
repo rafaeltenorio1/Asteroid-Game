@@ -9,24 +9,28 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Player extends GraphicObject {
+
+    private BufferedImage playerLeft;
+    private BufferedImage playerRight;
+    private BufferedImage playerStop;
+    private BufferedImage spriteHealth;
+
+    enum Directions {
+        STOP,
+        LEFT,
+        RIGHT
+    }
+
     public int health = 3;
-    protected BufferedImage spriteHealth;
-    public BufferedImage sprite, spriteLeft, spriteRight;
-    public String direction = "stop";
+
     public Player(int x, int y, int width, int height) {
         super(x, y, width, height);
 
-        pathname = "/res/Player/player.png";
-        playerLeft = "/res/Player/playerLeft.png";
-        playerRight = "/res/Player/playerRight.png";
-
-
         try{
-            spriteHealth = ImageIO.read(getClass().getResource("/res/Player/playerLife1_red.png"));
-            spriteLeft = ImageIO.read(getClass().getResource(playerLeft));
-            spriteRight = ImageIO.read(getClass().getResource(playerRight));
-            sprite = ImageIO.read(getClass().getResource(pathname));
-
+            playerStop = ImageIO.read(getClass().getResource("/res/Player/player.png"));
+            playerRight = ImageIO.read(getClass().getResource("/res/Player/playerRight.png"));
+            playerLeft = ImageIO.read(getClass().getResource("/res/Player/playerLeft.png"));
+            sprite = playerStop;
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -50,9 +54,31 @@ public class Player extends GraphicObject {
 
     }
 
+    public void moveToRight(){
+        translate(new Point(1, 0));
+        sprite = playerRight;
+    }
 
+    public void moveToLeft(){
+        translate(new Point(-1, 0));
+        sprite = playerLeft;
+    }
+
+    public void moveToTop() {
+        translate(new Point(0, -1));
+        sprite = playerStop;
+    }
+
+    public void moveToDown() {
+        translate(new Point(0, 1));
+        sprite = playerStop;
+    }
+
+    public void moveStop() {
+        sprite = playerStop;
+    }
 
     public Point attack(){
-        return new Point(getX(), getY());
+        return new Point(px, py);
     }
 }

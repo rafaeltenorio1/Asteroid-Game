@@ -3,6 +3,7 @@ package main.engine;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 
 public class Engine implements Runnable {
     public static JFrame frame;
