@@ -16,6 +16,7 @@ public class Asteroid implements Game {
     private Player player;
     private Shot shot;
     private Brackground background;
+    private FlyingSaucer enemy;
     private final List<Point> shotsPositions = new ArrayList<>();
     private final List<Boolean> shotsDisparados = new ArrayList<>();
     Laser laser;
@@ -29,6 +30,7 @@ public class Asteroid implements Game {
         player = new Player(Engine.canvas.getWidth() / 2 - 32, Engine.canvas.getHeight() / 2, 99, 75);
         background = new Brackground(0, 0, 254, 256);
         shot = new Shot(0, 0, 9, 33);
+        enemy = new FlyingSaucer(10, 10, 91, 91);
 
         LaserType type = LaserFactory.getLaserType("LaserGreen", "/res/Player/laserGreen.png");
         laser = new Laser(0, 0, 9, 33, type);
@@ -96,6 +98,7 @@ public class Asteroid implements Game {
 
         background.update();
         player.update();
+        enemy.update();
     }
 
     @Override
@@ -105,6 +108,7 @@ public class Asteroid implements Game {
 
         background.draw(graphics);
         player.draw(graphics);
+        enemy.draw(graphics);
 
         for (int i = 0; i < maxShots; i++) {
 

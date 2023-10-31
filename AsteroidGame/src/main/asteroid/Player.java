@@ -7,8 +7,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
-public class Player extends GraphicObject {
+public class Player extends Spaceship {
 
     private BufferedImage playerLeft;
     private BufferedImage playerRight;
@@ -27,7 +28,7 @@ public class Player extends GraphicObject {
         super(x, y, width, height);
 
         try{
-            playerStop = ImageIO.read(getClass().getResource("/res/Player/player.png"));
+            playerStop = GraphicObject.setImage("/res/Player/player.png");
             playerRight = ImageIO.read(getClass().getResource("/res/Player/playerRight.png"));
             playerLeft = ImageIO.read(getClass().getResource("/res/Player/playerLeft.png"));
             sprite = playerStop;
