@@ -1,8 +1,13 @@
 package main.asteroid;
 
+import main.asteroid.flyweight.laser.Laser;
+import main.asteroid.flyweight.laser.LaserFactory;
+import main.asteroid.flyweight.laser.LaserType;
+import main.asteroid.flyweight.stars.Star;
+import main.asteroid.flyweight.stars.StarFactory;
+import main.asteroid.flyweight.stars.StarType;
 import main.engine.Engine;
 import main.engine.Game;
-
 
 
 import java.awt.*;
@@ -10,6 +15,7 @@ import java.awt.event.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Asteroid implements Game {
@@ -20,6 +26,7 @@ public class Asteroid implements Game {
     private final List<Point> shotsPositions = new ArrayList<>();
     private final List<Boolean> shotsDisparados = new ArrayList<>();
     Laser laser;
+    private final List<Star> stars = new ArrayList<>();
     private final int maxShots = 10;
     private boolean gameOver = false;
 
@@ -32,8 +39,21 @@ public class Asteroid implements Game {
         shot = new Shot(0, 0, 9, 33);
         enemy = new FlyingSaucer(10, 10, 91, 91);
 
-        LaserType type = LaserFactory.getLaserType("LaserGreen", "/res/Player/laserGreen.png");
-        laser = new Laser(0, 0, 9, 33, type);
+        LaserType laserType = LaserFactory.getLaserType("LaserGreen", "/res/Player/laserGreen.png");
+        laser = new Laser(0, 0, 9, 33, laserType);
+
+        StarType starBig = StarFactory.getLaserType("StarBig", "/res/Player/starBig.png");
+        StarType starSmall = StarFactory.getLaserType("StarBig", "/res/Player/starSmall.png");
+
+        for (int i = 0; i < 40; i++) {
+            int x = ThreadLocalRandom.current().nextInt(0, Engine.canvas.getHeight() * 2) - Engine.canvas.getHeight();
+            int y = ThreadLocalRandom.current().nextInt(0, Engine.canvas.getWidth() * 2) - Engine.canvas.getWidth();
+            stars.add(new Star(x, y, 23, 21, starBig));
+
+            x = ThreadLocalRandom.current().nextInt(0, Engine.canvas.getHeight() * 2) - Engine.canvas.getHeight();
+            y = ThreadLocalRandom.current().nextInt(0, Engine.canvas.getWidth() * 2) - Engine.canvas.getWidth();
+            stars.add(new Star(x, y, 11, 11, starSmall));
+        }
 
         for (int i = 0; i < maxShots; i++) {
             shotsPositions.add(new Point(0, 0));
@@ -63,7 +83,7 @@ public class Asteroid implements Game {
             player.moveToDown();
         }
 
-        if (Engine.keyboard.keyUp(KeyEvent.VK_A) && Engine.keyboard.keyUp(KeyEvent.VK_D)){
+        if (Engine.keyboard.keyUp(KeyEvent.VK_A) && Engine.keyboard.keyUp(KeyEvent.VK_D)) {
             player.moveStop();
         }
 
@@ -99,6 +119,9 @@ public class Asteroid implements Game {
         background.update();
         player.update();
         enemy.update();
+        for (Star star : stars) {
+            star.update();
+        }
     }
 
     @Override
@@ -106,7 +129,11 @@ public class Asteroid implements Game {
         Graphics graphics = Engine.canvas.getBufferStrategy().getDrawGraphics();
         laser.draw(graphics);
 
-        background.draw(graphics);
+        for (Star star : stars) {
+            star.draw(graphics);
+        }
+
+        //background.draw(graphics);
         player.draw(graphics);
         enemy.draw(graphics);
 

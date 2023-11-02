@@ -6,7 +6,7 @@ import main.engine.GraphicObject;
 import java.awt.*;
 import java.io.IOException;
 
-public class FlyingSaucer extends Spaceship{
+public class FlyingSaucer extends GraphicObject implements Spaceship {
     public FlyingSaucer(int x, int y, int width, int height) {
         super(x, y, width, height);
         sprite = GraphicObject.setImage("/res/Player/enemyUFO.png");
@@ -14,12 +14,12 @@ public class FlyingSaucer extends Spaceship{
 
     @Override
     public void moveToRight() {
-        px += 2;
+        px += 2 * speed;
     }
 
     @Override
     public void moveToLeft() {
-        px -= 2;
+        px -= 2 * speed;
     }
 
     @Override
@@ -38,20 +38,20 @@ public class FlyingSaucer extends Spaceship{
     }
 
     @Override
-    public void update() {
-        moveToRight();
+    public Point attack() {
+        return null;
+    }
 
-        if(px < -width-10){
-            px = Engine.canvas.getWidth() - width/2 + 10;
+    @Override
+    public void update() {
+        if (px < Engine.canvas.getWidth()) {
+            moveToRight();
         }
-        if(px > Engine.canvas.getWidth()){
-            px = -(width)-10;
+        if (px > Engine.canvas.getWidth() - width) {
+            speed = -1;
         }
-        if(py < -5){
-            translate(new Point(0, 1));
-        }
-        if (py > Engine.canvas.getHeight() - height){
-            translate(new Point(0, -1));
+        if (px <= 0) {
+            speed = 1;
         }
     }
 }

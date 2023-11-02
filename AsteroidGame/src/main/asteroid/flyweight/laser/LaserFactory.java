@@ -1,11 +1,10 @@
-package main.asteroid;
+package main.asteroid.flyweight.laser;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class LaserFactory {
     static Map<String, LaserType> laserTypes = new HashMap<>();

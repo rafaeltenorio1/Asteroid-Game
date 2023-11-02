@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Player extends Spaceship {
+public class Player extends GraphicObject implements Spaceship {
 
     private BufferedImage playerLeft;
     private BufferedImage playerRight;

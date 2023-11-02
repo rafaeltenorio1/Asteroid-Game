@@ -1,13 +1,13 @@
-package main.asteroid;
+package main.asteroid.flyweight.stars;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class LaserType {
-    private String name;
-    private BufferedImage sprite;
+public class StarType {
+    private final String name;
+    private final BufferedImage sprite;
 
-    public LaserType(String name, BufferedImage sprite) {
+    public StarType(String name, BufferedImage sprite) {
         this.name = name;
         this.sprite = sprite;
     }

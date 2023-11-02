@@ -1,4 +1,4 @@
-package main.asteroid;
+package main.asteroid.flyweight.laser;
 
 import java.awt.*;
 
