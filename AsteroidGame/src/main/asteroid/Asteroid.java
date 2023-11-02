@@ -42,8 +42,8 @@ public class Asteroid implements Game {
         LaserType laserType = LaserFactory.getLaserType("LaserGreen", "/res/Player/laserGreen.png");
         laser = new Laser(0, 0, 9, 33, laserType);
 
-        StarType starBig = StarFactory.getLaserType("StarBig", "/res/Player/starBig.png");
-        StarType starSmall = StarFactory.getLaserType("StarBig", "/res/Player/starSmall.png");
+        StarType starBig = StarFactory.getStarType("StarBig", "/res/Player/starBig.png");
+        StarType starSmall = StarFactory.getStarType("StarSmall", "/res/Player/starSmall.png");
 
         for (int i = 0; i < 40; i++) {
             int x = ThreadLocalRandom.current().nextInt(0, Engine.canvas.getHeight() * 2) - Engine.canvas.getHeight();

@@ -9,7 +9,7 @@ import java.util.Map;
 public class StarFactory {
     static Map<String, StarType> laserTypes = new HashMap<>();
 
-    public static StarType getLaserType(String name, String pathname) {
+    public static StarType getStarType(String name, String pathname) {
         StarType result = laserTypes.get(name);
 
         BufferedImage sprite = null;
