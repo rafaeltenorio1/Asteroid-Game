@@ -1,102 +1,68 @@
 package main.asteroid;
 
-import main.engine.Engine;
-import main.engine.GraphicObject;
+import main.spaceships.Spaceship;
+import main.spaceships.SpaceshipBlue;
+import main.spaceships.SpaceshipGreen;
+import main.spaceships.SpaceshipRed;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-public class Player extends GraphicObject  {
-
-
+public class Player {
     private Spaceship spaceship;
-    private BufferedImage playerStop;
-    private BufferedImage playerHealth;
-    private BufferedImage playerScore;
+    private int health;
+    private int x, y, height, width;
 
-
-    public void start(Spaceship spaceship){
-        this.spaceship = spaceship;
-    }
-
-    public int score = 0;
-    public int health = spaceship.health();
-    public int maxHealth = spaceship.maxHealth();
-    public int speed = spaceship.speed();
-    private int damage = spaceship.damage();
-
-    enum Directions {
-        STOP,
-        LEFT,
-        RIGHT;
-
+    public enum Spaceships{
+        RED,
+        BLUE,
+        GREEN
     }
 
     public Player(int x, int y, int width, int height) {
-        super(x, y, width, height);
-
-        try{
-            playerStop = GraphicObject.setImage(spaceship.spriteStop());
-            playerHealth = ImageIO.read(getClass().getResource("/res/Player/playerLife1_red.png"));
-            playerScore = ImageIO.read(getClass().getResource("/res/Player/star_gold.png"));
-            sprite = playerStop;
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
+        spaceship = new SpaceshipRed(x, y, width, height);
+        health = spaceship.getHealth();
     }
-    @Override
-    public void update() {
 
-        if(px < -(width/2)-10){
-            px = Engine.canvas.getWidth() - width/2 + 10;
+    public void setShip(Spaceships type){
+        switch (type){
+            case RED: spaceship = new SpaceshipRed(x, y, width, height);
+            break;
+            case BLUE: spaceship = new SpaceshipBlue(x, y, width, height);
+            break;
+            case GREEN: spaceship = new SpaceshipGreen(x, y, width, height);
         }
-        if(px > Engine.canvas.getWidth() - width/2 + 10){
-            px = -(width/2)-10;
-        }
-        if(py < -5){
-            translate(new Point(0, 1));
-        }
-        if (py > Engine.canvas.getHeight() - height){
-            translate(new Point(0, -1));
-        }
-
     }
 
     public void moveToRight(){
-        translate(new Point(speed, 0));
-        sprite = spaceship.spriteToRight();
+        spaceship.moveToRight();
     }
-
     public void moveToLeft(){
-        translate(new Point(-speed, 0));
-        sprite = spaceship.spriteToLeft();
+        spaceship.moveToLeft();
+    }
+    public void moveToTop(){
+        spaceship.moveToTop();
+    }
+    public void moveToDown(){
+        spaceship.moveToDown();
     }
 
-    public void moveToTop() {
-        translate(new Point(0, -speed));
-        sprite = playerStop;
+    public void update(){
+        spaceship.update();
     }
 
-    public void moveToDown() {
-        translate(new Point(0, speed));;
-        sprite = playerStop;
+    public void draw(Graphics g){
+        spaceship.draw(g);
     }
 
-    public void moveStop() {
-        sprite = playerStop;
+    public int getHealth() {
+        return health;
     }
 
     public Point attack(){
-        return new Point(px, py);
-    }
-
-    public BufferedImage life(){
-        return playerHealth;
-    }
-    public BufferedImage score(){
-        return playerScore;
+        return new Point(x, y);
     }
 }

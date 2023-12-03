@@ -10,20 +10,24 @@ import main.engine.Engine;
 import main.engine.Game;
 
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Asteroid implements Game {
     private Player player;
-    private SpaceshipRed red;
     private Shot shot;
     private Store store;
+    private int score = 0;
+    private int health = 0;
     public String GameState = "run";
     private Brackground background;
     private FlyingSaucer enemy;
@@ -34,6 +38,9 @@ public class Asteroid implements Game {
     private final int maxShots = 10;
     private boolean gameOver = false;
     private boolean options = false;
+    private BufferedImage lifeImage;
+    private  BufferedImage starScore;
+
 
     @Override
     public void init() {
@@ -41,10 +48,20 @@ public class Asteroid implements Game {
 
         store = new Store();
         player = new Player(Engine.canvas.getWidth() / 2 - 32, Engine.canvas.getHeight() / 2, 99, 75);
-        player.start(new SpaceshipRed());
         background = new Brackground(0, 0, 254, 256);
         shot = new Shot(0, 0, 9, 33);
         enemy = new FlyingSaucer(10, 10, 91, 91);
+
+
+        try{
+            lifeImage = ImageIO.read(getClass().getResource("/res/Player/playerLife1_red.png"));
+            starScore = ImageIO.read(getClass().getResource("/res/Player/star_gold.png"));
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        health = player.getHealth();
 
         LaserType laserType = LaserFactory.getLaserType("LaserGreen", "/res/Player/laserGreen.png");
         laser = new Laser(0, 0, 9, 33, laserType);
@@ -67,7 +84,6 @@ public class Asteroid implements Game {
             shotsDisparados.add(false);
         }
 
-        player.speed = 4;
     }
 
     @Override
@@ -91,11 +107,7 @@ public class Asteroid implements Game {
                 if (Engine.keyboard.keyDown(KeyEvent.VK_S)) {
                     player.moveToDown();
                 }
-
-                if (Engine.keyboard.keyUp(KeyEvent.VK_A) && Engine.keyboard.keyUp(KeyEvent.VK_D)) {
-                    player.moveStop();
-                }
-                if (player.health == 0) {
+                if (player.getHealth() == 0) {
                     gameOver = true;
                 }
                 if (Engine.keyboard.keyPress(KeyEvent.VK_X)) {
@@ -104,11 +116,11 @@ public class Asteroid implements Game {
 
                 // Testa a vida, para ela sumir
                 if (Engine.keyboard.keyPress(KeyEvent.VK_Q)) {
-                    player.health -= 1;
+                    health -= 1;
                 }
                 // Testar o score
                 if (Engine.keyboard.keyPress((KeyEvent.VK_F))) {
-                    player.score += 10;
+                    score += 10;
                 }
                 if (Engine.keyboard.keyPress((KeyEvent.VK_E))) {
                     GameState = "pause";
@@ -117,14 +129,14 @@ public class Asteroid implements Game {
                 if (Engine.keyboard.keyPress((KeyEvent.VK_P))) {
                     GameState = "pause";
                 }
-                if(Engine.keyboard.keyPress(KeyEvent.VK_0)){
-                    player.start(new SpaceshipRed());
-                }
                 if(Engine.keyboard.keyPress(KeyEvent.VK_1)){
-                    player.start(new SpaceshipBlue());
+                    player.setShip(Player.Spaceships.RED);
                 }
                 if(Engine.keyboard.keyPress(KeyEvent.VK_2)){
-                    player.start(new SpaceshipGreen());
+                    player.setShip(Player.Spaceships.BLUE);
+                }
+                if(Engine.keyboard.keyPress(KeyEvent.VK_3)){
+                    player.setShip(Player.Spaceships.GREEN);
                 }
 
                 if (Engine.keyboard.keyPress(KeyEvent.VK_SPACE)) {
@@ -157,7 +169,7 @@ public class Asteroid implements Game {
                     star.update();
                 }
             }
-            if(GameState == "pause"){
+            if(Objects.equals(GameState, "pause")){
                 if (Engine.keyboard.keyPress((KeyEvent.VK_ESCAPE))) {
                     GameState = "run";
 
@@ -168,8 +180,7 @@ public class Asteroid implements Game {
         }
         if(gameOver){
             if(Engine.keyboard.keyPress(KeyEvent.VK_ENTER)){
-                player.score = 0;
-                player.health = player.maxHealth;
+                health = player.getHealth();
                 gameOver = false;
             }
 
@@ -204,15 +215,15 @@ public class Asteroid implements Game {
         }
 
 
-        for(int i = 0; i < player.health; i++){
-            graphics.drawImage(player.life(), 463 - (i*34), 10,null);
+        for(int i = 0; i < health; i++){
+            graphics.drawImage(lifeImage, 463 - (i*34), 10,null);
         }
 
-        graphics.drawImage(player.score(),2,2,null);
+        graphics.drawImage(starScore,2,2,null);
         Font fonte = new Font("Arial", Font.BOLD, 25);
         graphics.setFont(fonte);
         graphics.setColor(Color.white);
-        graphics.drawString("" + player.score,35,27);
+        graphics.drawString("" + score,35,27);
 
 
         if (gameOver) {
@@ -223,7 +234,7 @@ public class Asteroid implements Game {
             graphics.setColor(Color.black);
             graphics.drawString("Pressione 'ENTER' para reiniciar", 30, 280);
         }
-        if (GameState == "pause"){
+        if (Objects.equals(GameState, "pause")){
             graphics.setFont(new Font("Arial", Font.BOLD, 56));
             graphics.setColor(Color.black);
             graphics.drawString("PAUSE", 160, 220);
