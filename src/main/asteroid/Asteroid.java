@@ -110,12 +110,9 @@ public class Asteroid implements Game {
                 }
 
                 if (Engine.keyboard.keyPress((KeyEvent.VK_C))) {
-                    if (player.getShield() == false) {
-                        player.setShield(true);
-                    } else {
-                        player.setShield(false);
-                    }
+                    player.setShild();
                 }
+
                 if (Engine.keyboard.keyPress((KeyEvent.VK_P))) {
                     GameState = "pause";
                 }

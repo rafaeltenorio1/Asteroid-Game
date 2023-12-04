@@ -13,6 +13,7 @@ public class Player {
     private int health;
     private int x, y, height, width;
     private boolean side = true;
+    private boolean shild = false;
 
 
     public enum Spaceships{
@@ -62,7 +63,9 @@ public class Player {
 
     public void draw(Graphics2D g){
         spaceship.draw(g);
-
+        if (shild){
+            g.drawImage(GraphicObject.setImage("/res/Player/shield3.png"), x - 26, y - 30, width + 50, height + 50, null);
+        }
     }
 
     public int getHealth() {
@@ -74,14 +77,11 @@ public class Player {
 
         return spaceship.getPosition();
     }
-
-    public boolean getShield(){
-        return spaceship.getShield();
-    }
-    public void setShield(boolean value){
-        spaceship.setShield(value);
-    }
     public int getDamage(){
         return spaceship.getDamage();
+    }
+
+    public void setShild(){
+        shild = !shild;
     }
 }

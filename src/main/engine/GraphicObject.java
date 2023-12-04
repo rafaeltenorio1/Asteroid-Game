@@ -48,12 +48,6 @@ public abstract class GraphicObject {
             throw new NullPointerException();
         }
         g.drawImage(sprite, px, py, width, height, null);
-
-
-        g.drawImage(GraphicObject.setImage("/res/Player/shield3.png"), px - 26, py - 30, width + 50, height + 50, null);
-
-
-
     }
 
     public Point getPosition(){
