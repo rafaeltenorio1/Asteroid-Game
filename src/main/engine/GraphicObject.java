@@ -41,7 +41,7 @@ public abstract class GraphicObject {
 
     public abstract void update();
 
-    public void draw(Graphics g){
+    public void draw(Graphics2D g){
         if (sprite == null){
             throw new NullPointerException();
         }

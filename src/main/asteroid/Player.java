@@ -55,7 +55,7 @@ public class Player {
         spaceship.update();
     }
 
-    public void draw(Graphics g){
+    public void draw(Graphics2D g){
         spaceship.draw(g);
     }
 

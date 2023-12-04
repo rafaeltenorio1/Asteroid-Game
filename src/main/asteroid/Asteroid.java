@@ -33,9 +33,8 @@ public class Asteroid implements Game {
     private final List<Point> shotsPositions = new ArrayList<>();
     private final List<Boolean> shotsDisparados = new ArrayList<>();
     private final List<Star> stars = new ArrayList<>();
-    private final int maxShots = 10;
+    private final int maxShots = 30;
     private boolean gameOver = false;
-    private boolean options = false;
     private BufferedImage lifeImage;
     private  BufferedImage starScore;
 
@@ -111,41 +110,55 @@ public class Asteroid implements Game {
                 if (Engine.keyboard.keyPress((KeyEvent.VK_F))) {
                     score += 10;
                 }
-                if (Engine.keyboard.keyPress((KeyEvent.VK_E))) {
-                    GameState = "pause";
-                    options = true;
+
+                if (Engine.keyboard.keyPress((KeyEvent.VK_C))) {
+                    if (player.getShield() == false) {
+                        player.setShield(true);
+                    } else {
+                        player.setShield(false);
+                    }
                 }
                 if (Engine.keyboard.keyPress((KeyEvent.VK_P))) {
                     GameState = "pause";
                 }
-                if(Engine.keyboard.keyPress(KeyEvent.VK_1)){
+                if (Engine.keyboard.keyPress(KeyEvent.VK_1)) {
                     player.setShip(Player.Spaceships.RED);
+                    health = player.getHealth();
+                    damage = player.getDamage();
+                    shot.setMiddleShot(true);
+                    shot.setSideShot(false);
                 }
-                if(Engine.keyboard.keyPress(KeyEvent.VK_2)){
-                    if(score == 100) {
-                        score -= 200;
+                if (Engine.keyboard.keyPress(KeyEvent.VK_2)) {
+                    if (score >= 100) {
+                        score -= 100;
                         player.setShip(Player.Spaceships.BLUE);
+                        health = player.getHealth();
+                        damage = player.getDamage();
+                        shot.setMiddleShot(false);
+                        shot.setSideShot(true);
                     }
                 }
-                if(Engine.keyboard.keyPress(KeyEvent.VK_3)){
-                    if (score == 200) {
-                        score -= 700;
+                if (Engine.keyboard.keyPress(KeyEvent.VK_3)) {
+                    if (score >= 200) {
+                        score -= 200;
                         player.setShip(Player.Spaceships.GREEN);
                         health = player.getHealth();
+                        damage = player.getDamage();
+                        shot.setMiddleShot(true);
+                        shot.setSideShot(true);
                     }
                 }
 
                 if (Engine.keyboard.keyPress(KeyEvent.VK_SPACE)) {
 
                     for (int i = 0; i < maxShots; i++) {
-                        if (shotsDisparados.get(i)) {
-                            continue;
-                        } else {
+                        if (!shotsDisparados.get(i)) {
                             shotsDisparados.set(i, true);
                             shotsPositions.set(i, player.attack());
                             break;
                         }
                     }
+                    System.out.println(damage);
                 }
 
                 for (int i = 0; i < maxShots; i++) {
@@ -188,7 +201,7 @@ public class Asteroid implements Game {
 
     @Override
     public void draw() {
-        Graphics graphics = Engine.canvas.getBufferStrategy().getDrawGraphics();
+        Graphics2D graphics = (Graphics2D) Engine.canvas.getBufferStrategy().getDrawGraphics();
 
 
         for (Star star : stars) {
@@ -204,12 +217,6 @@ public class Asteroid implements Game {
                 shot.shoot(shotsPositions.get(i));
                 shot.draw(graphics);
             }
-
-        }
-        // Cria a janela da loja
-        if(options){
-            options = false;
-            store.window();
 
         }
 
@@ -250,5 +257,7 @@ public class Asteroid implements Game {
     @Override
     public void end() {
 
+
     }
 }
+

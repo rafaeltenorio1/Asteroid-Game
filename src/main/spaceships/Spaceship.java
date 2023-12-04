@@ -8,6 +8,8 @@ import java.awt.*;
 public abstract class Spaceship extends GraphicObject {
     protected int speed = 0;
     protected int health = 3;
+    protected int damage = 0;
+    protected boolean shield;
 
     public Spaceship(int x, int y, int width, int height) {
         super(x, y, width, height);
